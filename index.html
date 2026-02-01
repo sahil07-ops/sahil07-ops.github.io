@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Day</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root{
+  --primary-pink:#ff4081;
+  --dark-pink:#d32f75;
+  --light-pink:#ffeff6;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,sans-serif;
+}
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:var(--light-pink);
+}
+.container{text-align:center}
+.buttons-container{
+  position:relative;
+  width:320px;
+  height:220px;
+  margin:30px auto;
+}
+.valentine-button{
+  position:absolute;
+  padding:14px 28px;
+  font-size:1.2rem;
+  border:none;
+  border-radius:40px;
+  cursor:pointer;
+  font-weight:bold;
+}
+#yesBtn{
+  background:var(--primary-pink);
+  color:#fff;
+  left:25%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+#noBtn{
+  background:#f8bbd9;
+  color:#777;
+  left:75%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+.message{
+  display:none;
+  margin-top:20px;
+  background:#fff;
+  padding:20px;
+  border-radius:15px;
+  border:2px dashed var(--primary-pink);
+}
+.heart{
+  color:var(--primary-pink);
+}
+.balloon{
+  position:absolute;
+  width:50px;
+  height:65px;
+  border-radius:50%;
+  animation:float 4s ease-in-out infinite;
+}
+.balloon1{background:#ff4081;top:10%;left:5%}
+.balloon2{background:#ffc107;top:15%;right:8%}
+.balloon3{background:#4caf50;bottom:10%;left:10%}
+.balloon4{background:#2196f3;bottom:15%;right:5%}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-15px)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Happy Valentine's Day <i class="fas fa-heart heart"></i></h1>
+  <p>Will you be my Valentine?</p>
+
+  <div class="buttons-container" id="buttonsContainer">
+    <button id="yesBtn" class="valentine-button">YES ❤️</button>
+    <button id="noBtn" class="valentine-button">NO 😅</button>
+  </div>
+
+  <div class="message" id="message">
+    <h2>You said YES! 💖</h2>
+    <p>This just made my day ❤️</p>
+  </div>
+</div>
+
+<div class="balloon balloon1"></div>
+<div class="balloon balloon2"></div>
+<div class="balloon balloon3"></div>
+<div class="balloon balloon4"></div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const message = document.getElementById("message");
+const container = document.getElementById("buttonsContainer");
+
+function moveNo(){
+  const pad=10;
+  const maxX=container.clientWidth-noBtn.offsetWidth-pad;
+  const maxY=container.clientHeight-noBtn.offsetHeight-pad;
+  noBtn.style.left=Math.random()*maxX+pad+"px";
+  noBtn.style.top=Math.random()*maxY+pad+"px";
+  noBtn.style.transform="none";
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", e=>{
+  e.preventDefault();
+  moveNo();
+},{passive:false});
+
+yesBtn.addEventListener("click", ()=>{
+  message.style.display="block";
+  noBtn.style.display="none";
+  yesBtn.textContent="THANK YOU ❤️";
+  createHearts();
+});
+
+function createHearts(){
+  const color=getComputedStyle(document.documentElement)
+    .getPropertyValue('--primary-pink');
+
+  for(let i=0;i<12;i++){
+    setTimeout(()=>{
+      const h=document.createElement("div");
+      h.innerHTML="❤️";
+      h.style.position="fixed";
+      h.style.left=Math.random()*100+"vw";
+      h.style.top="100vh";
+      h.style.fontSize="24px";
+      h.style.color=color;
+      h.style.animation="rise 3s linear forwards";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),3000);
+    },i*150);
+  }
+}
+
+const style=document.createElement("style");
+style.innerHTML=`
+@keyframes rise{
+  to{transform:translateY(-100vh);opacity:0}
+}`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
